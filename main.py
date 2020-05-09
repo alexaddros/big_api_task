@@ -9,6 +9,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('path', type=str)
 parser.add_argument('--spn', type=str, default='0.002')
 arguments = parser.parse_args().__dict__
+map_types = ['sat', 'map', 'sat,skl']
+index = 0
 
 toponym_to_find = arguments['path']
 delta = arguments['spn']
@@ -102,6 +104,11 @@ while pygame.event.wait().type != pygame.QUIT:
             lat = float(map_params['ll'].split(',')[1])
             lat -= 0.0001
             map_params['ll'] = f'{map_params["ll"].split(",")[0]},{lat}'
+            update_screen(map_params)
+
+        elif keys[pygame.K_HOME]:
+            index += 1
+            map_params['l'] = map_types[index % 3]
             update_screen(map_params)
 
     except pygame.error as exc:
